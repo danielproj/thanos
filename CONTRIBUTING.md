@@ -40,6 +40,15 @@ Detection lives in `Sources/Thanos/Model/CleanupEngine.swift`. A good rule:
 
 Follow the surrounding code: SwiftUI, Swift Concurrency, Liquid Glass (`glassEffect`) for controls and floating surfaces, plain materials for content.
 
+## Releases (maintainers)
+
+Releases are signed and notarized on the maintainer's Mac, so the signing keys never leave it.
+
+1. Add the version to `CHANGELOG.md` and merge it to `main`.
+2. Tag and push: `git tag -a vX.Y.Z -m "Thanos X.Y.Z" && git push origin vX.Y.Z`. The `release` workflow checks that the tag is on `main`, matches the changelog, and builds and tests cleanly.
+3. Package: `THANOS_NOTARY_PROFILE=<profile> scripts/package-release.sh --version X.Y.Z --build N`. This signs with the Developer ID identity, notarizes and staples the app and disk image, and writes everything to `artifacts/release/`.
+4. Publish: `gh release create vX.Y.Z --verify-tag --title "Thanos X.Y.Z — Development Preview" --notes-file artifacts/release/release-notes.md artifacts/release/*`.
+
 ## Code of conduct
 
 This project follows the [Code of Conduct](CODE_OF_CONDUCT.md).
