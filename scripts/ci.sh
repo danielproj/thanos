@@ -6,7 +6,12 @@ swift --version
 swift build -c release --arch arm64
 swift test
 scripts/build-app.sh
-codesign --verify --strict build/Thanos.app
+codesign --verify --strict --deep build/Thanos.app
+# Auto-update must be wired: Sparkle embedded and loadable, feed and public key present.
+test -d build/Thanos.app/Contents/Frameworks/Sparkle.framework
+otool -L build/Thanos.app/Contents/MacOS/Thanos | grep -q "@rpath/Sparkle.framework"
+otool -l build/Thanos.app/Contents/MacOS/Thanos | grep -q "@executable_path/../Frameworks"
+for key in SUFeedURL SUPublicEDKey; do /usr/libexec/PlistBuddy -c "Print :$key" Resources/Info.plist >/dev/null; done
 plutil -lint Resources/Info.plist
 # The app must never ship attribution to tools in its metadata or docs.
 if grep -RIniE "co-authored-by|generated with" --exclude-dir=.build --exclude-dir=build --exclude-dir=.git --exclude=ci.sh . ; then
