@@ -20,7 +20,7 @@ Thanos is a native macOS disk visualizer built with SwiftUI and Liquid Glass. It
 | Caches & Logs | Per-app caches and user logs that apps rebuild on their own. |
 | Developer Junk | Xcode DerivedData and simulators, npm/pnpm/bun/yarn/pip/Homebrew/Gradle/Cargo caches, and `node_modules`, `.venv`, `target`, `.build`, `Pods`, `.next` in projects you haven't touched for a month. |
 | Installers | `.dmg`, `.pkg`, `.xip`, `.iso` and `.ipsw` files in Downloads and Desktop. |
-| Duplicates | Byte-identical copies, confirmed by SHA-256; hard links excluded, the oldest copy kept. |
+| Duplicates | Byte-identical copies outside git repositories, confirmed by SHA-256; hard links excluded, the oldest copy kept. |
 | Large & Forgotten | Files over 100 MB untouched for a year. |
 | Trash | What's already in the Trash. |
 

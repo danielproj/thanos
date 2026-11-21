@@ -104,4 +104,26 @@ import Testing
         #expect(result.stats.devArtifacts.map(\.kind) == [.nodeModules])
         #expect(result.stats.categoryTotals[.developer, default: 0] > 0, "files inside node_modules count as developer")
     }
+
+    @Test func filesInsideGitWorkingTreesAreNotDuplicateCandidates() throws {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory.appendingPathComponent("thanos-dup-\(UUID().uuidString)")
+        defer { try? fm.removeItem(at: root) }
+        let repo = root.appendingPathComponent("repo/tests/fixtures")
+        let worktree = root.appendingPathComponent("worktree/tests/fixtures")
+        let loose = root.appendingPathComponent("Downloads")
+        for dir in [repo, worktree, loose] { try fm.createDirectory(at: dir, withIntermediateDirectories: true) }
+        try fm.createDirectory(at: root.appendingPathComponent("repo/.git"), withIntermediateDirectories: true)
+        try Data("gitdir: ../repo/.git/worktrees/w".utf8).write(to: root.appendingPathComponent("worktree/.git"))  // worktrees use a .git FILE
+        let blob = Data(repeating: 7, count: 5 << 20)
+        try blob.write(to: repo.appendingPathComponent("big.json"))
+        try blob.write(to: worktree.appendingPathComponent("big.json"))
+        try blob.write(to: loose.appendingPathComponent("big copy.json"))
+        try blob.write(to: loose.appendingPathComponent("big.json"))
+
+        let candidates = DiskScanner().scan(rootPath: root.path).stats.duplicateCandidates.map(\.path)
+        #expect(candidates.count == 2, "only the two loose copies outside any repo are candidates")
+        #expect(candidates.allSatisfy { $0.contains("/Downloads/") })
+    }
 }
+
