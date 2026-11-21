@@ -33,7 +33,7 @@ profile="${THANOS_NOTARY_PROFILE:-}"
 [ -n "$profile" ] || die "THANOS_NOTARY_PROFILE must name a notarytool keychain profile" 66
 
 scripts/ci.sh
-THANOS_VERSION="$version" THANOS_BUILD="$build" scripts/build-app.sh
+THANOS_CHANNEL=release THANOS_VERSION="$version" THANOS_BUILD="$build" scripts/build-app.sh
 
 work="$(mktemp -d)"; trap 'rm -rf "$work"' EXIT
 app="$work/Thanos.app"

@@ -43,7 +43,7 @@ For a complete picture, grant **Full Disk Access** in System Settings › Privac
 Requires Xcode 26 or later (macOS 26 SDK).
 
 ```bash
-scripts/build-app.sh --open    # builds build/Thanos.app
+scripts/build-app.sh --open    # builds build/Thanos.app ("Thanos Dev", separate from the installed app)
 scripts/ci.sh                  # build, tests and checks — the same as CI
 ```
 
