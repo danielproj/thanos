@@ -96,6 +96,10 @@ final class DiskScanner: @unchecked Sendable {
         var categoryOverride: FileCategory?
         var insideArtifact = false
         var insidePackage = false
+        /// Inside a git working tree (a folder holding `.git`, which is a file in worktrees).
+        /// Identical files there are usually tracked content duplicated across worktrees,
+        /// not junk, so they are never offered as duplicates.
+        var insideRepo = false
     }
 
     /// Other apps' sandbox containers. Without Full Disk Access, opening one makes macOS show a
@@ -140,6 +144,8 @@ final class DiskScanner: @unchecked Sendable {
         var progressBytes: Int64 = 0
         let parentPath = url.path
         let skipChildren = !hasFullDiskAccess && protectedParents.contains(parentPath)
+        var ctx = ctx
+        if !ctx.insideRepo && entries.contains(where: { $0.lastPathComponent == ".git" }) { ctx.insideRepo = true }
 
         for entry in entries {
             let path = entry.path
@@ -194,7 +200,7 @@ final class DiskScanner: @unchecked Sendable {
                     if size >= largeThreshold && !ctx.insidePackage {
                         stats.largeFiles.append(FileRecord(path: path, size: size, modified: mod, category: category))
                     }
-                    if size >= duplicateThreshold && !ctx.insidePackage && !ctx.insideArtifact
+                    if size >= duplicateThreshold && !ctx.insidePackage && !ctx.insideArtifact && !ctx.insideRepo
                         && ctx.categoryOverride != .system && ctx.categoryOverride != .apps {
                         stats.duplicateCandidates.append(FileRecord(path: path, size: size, modified: mod, category: category))
                     }
