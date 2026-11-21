@@ -1,7 +1,7 @@
-# Release packaging. Runs ONLY for a pushed version tag. It repeats the secret-free CI, then — in the protected
-# `release` environment, which needs a reviewer's approval and holds the only secrets — signs, notarizes and packages,
-# and creates a DRAFT release that a person publishes. Signing needs a runner whose keychain holds the Developer ID
-# identity and the notarytool profile (set THANOS_RUNNER to such a self-hosted runner). Nothing here runs for a pull request.
+# Release verification. Runs ONLY for a pushed version tag and uses no secrets: it checks that the tag is on the
+# default branch and that the tagged commit builds and passes every test. Signing, notarization and publishing
+# happen on the maintainer's Mac with scripts/package-release.sh (see CONTRIBUTING.md › Releases), so signing keys
+# never leave that machine.
 name: release
 on:
   push:
@@ -17,28 +17,14 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - name: Select the newest Xcode
+        run: |
+          latest="$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1 || true)"
+          if [ -n "$latest" ]; then sudo xcode-select -s "$latest"; fi
+          xcodebuild -version
       - name: The tag must be on the default branch
         run: git merge-base --is-ancestor "$GITHUB_SHA" "origin/${{ github.event.repository.default_branch }}"
-      - run: ./scripts/ci.sh
-  package:
-    needs: verify
-    runs-on: ${{ vars.THANOS_RUNNER || 'macos-latest' }}
-    timeout-minutes: 90
-    environment: release
-    permissions:
-      contents: write
-    env:
-      THANOS_DEVELOPER_ID: ${{ secrets.THANOS_DEVELOPER_ID }}
-      THANOS_NOTARY_PROFILE: ${{ secrets.THANOS_NOTARY_PROFILE }}
-      GH_TOKEN: ${{ github.token }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Package, sign and notarize
-        run: ./scripts/package-release.sh --version "${GITHUB_REF_NAME#v}" --build "$GITHUB_RUN_NUMBER" --out "$RUNNER_TEMP/release"
-      - name: Create a draft release (a person publishes it)
-        run: |
-          gh release create "$GITHUB_REF_NAME" --draft --verify-tag --title "Thanos ${GITHUB_REF_NAME#v} — Development Preview" \
-            --notes-file "$RUNNER_TEMP/release/release-notes.md" "$RUNNER_TEMP/release"/Thanos-*.dmg \
-            "$RUNNER_TEMP/release"/Thanos-*.dmg.sha256 "$RUNNER_TEMP/release/sbom.cdx.json"
+      - name: The tag must match the changelog
+        run: grep -q "^## \[${GITHUB_REF_NAME#v}\]" CHANGELOG.md
+      - name: Build, test and check (no secrets)
+        run: ./scripts/ci.sh
