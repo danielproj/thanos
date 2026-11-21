@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>dev.thanos.diskmap</string>
+	<string>com.danyilproskurka.thanos</string>
 	<key>CFBundleName</key>
 	<string>Thanos</string>
 	<key>CFBundlePackageType</key>

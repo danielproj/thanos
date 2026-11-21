@@ -22,6 +22,6 @@ fi
 cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 # Ad-hoc, but with a designated requirement tied to the bundle id rather than the binary hash,
 # so a Full Disk Access grant survives rebuilds.
-codesign --force --sign - -r='designated => identifier "dev.thanos.diskmap"' "$APP"
+codesign --force --sign - -r='designated => identifier "com.danyilproskurka.thanos"' "$APP"
 echo "Built $APP ($version, build $build)"
 if [ "${1:-}" = "--open" ]; then open "$APP"; fi
