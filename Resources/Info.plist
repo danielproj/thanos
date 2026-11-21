@@ -38,5 +38,19 @@
 	<string>NSApplication</string>
 	<key>NSRemovableVolumesUsageDescription</key>
 	<string>Thanos can map external drives you choose to scan.</string>
+	<key>SUAllowsAutomaticUpdates</key>
+	<true/>
+	<key>SUAutomaticallyUpdate</key>
+	<false/>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUEnableSystemProfiling</key>
+	<false/>
+	<key>SUFeedURL</key>
+	<string>https://github.com/danielproj/thanos/releases/latest/download/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>9Z2aWWoEaHnKmUqvbthD5wbSUZm2qZveI7l5oQr7CbY=</string>
+	<key>SUScheduledCheckInterval</key>
+	<integer>86400</integer>
 </dict>
 </plist>

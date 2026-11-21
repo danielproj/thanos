@@ -46,8 +46,10 @@ Releases are signed and notarized on the maintainer's Mac, so the signing keys n
 
 1. Add the version to `CHANGELOG.md` and merge it to `main`.
 2. Tag and push: `git tag -a vX.Y.Z -m "Thanos X.Y.Z" && git push origin vX.Y.Z`. The `release` workflow checks that the tag is on `main`, matches the changelog, and builds and tests cleanly.
-3. Package: `THANOS_NOTARY_PROFILE=<profile> scripts/package-release.sh --version X.Y.Z --build N`. This signs with the Developer ID identity, notarizes and staples the app and disk image, and writes everything to `artifacts/release/`.
-4. Publish: `gh release create vX.Y.Z --verify-tag --title "Thanos X.Y.Z — Development Preview" --notes-file artifacts/release/release-notes.md artifacts/release/*`.
+3. Package: `THANOS_NOTARY_PROFILE=<profile> scripts/package-release.sh --version X.Y.Z --build N`. This signs with the Developer ID identity, notarizes and staples the app and disk image, signs the update with the Sparkle EdDSA key from the keychain (account `thanos`), and writes everything, including `appcast.xml`, to `artifacts/release/`. `--build` must be higher than every earlier release: Sparkle compares build numbers.
+4. Publish: `gh release create vX.Y.Z --verify-tag --latest --title "Thanos X.Y.Z — Development Preview" --notes-file artifacts/release/release-notes.md artifacts/release/*`. Installed copies find the update through `appcast.xml` on the latest release, so mark it latest and include that file.
+
+The Sparkle private key lives only in the maintainer's login keychain. Back it up with `.build/artifacts/sparkle/Sparkle/bin/generate_keys --account thanos -x <file>` and keep that file somewhere safe: without the key, installed copies can no longer be updated.
 
 ## Code of conduct
 

@@ -34,6 +34,8 @@ No byte is offered twice: if a folder is already covered by one finding, it is n
 
 Download the latest `Thanos-X.Y.Z.dmg` from [Releases](https://github.com/danielproj/thanos/releases), open it and drag Thanos into Applications. Releases are Developer ID signed and notarized. Requires **macOS 26 or later** on Apple Silicon.
 
+Thanos keeps itself up to date with [Sparkle](https://sparkle-project.org): it checks once a day and offers new versions, and you can also choose **Thanos › Check for Updates…**. Updates are verified with an EdDSA signature before they are installed. Automatic updates start with 0.3.0, so earlier versions need one manual download.
+
 For a complete picture, grant **Full Disk Access** in System Settings › Privacy & Security › Full Disk Access. Without it, Thanos skips other apps' private containers, because reading them would block on a macOS permission prompt.
 
 ## Build from source
@@ -49,7 +51,7 @@ Development hooks: `THANOS_SCAN=<path>` starts a scan on launch and `THANOS_VIEW
 
 ## Privacy
 
-Thanos makes no network connections and collects nothing. See [PRIVACY.md](PRIVACY.md).
+Thanos collects nothing. Its only network request is the daily update check against this repository's releases, which you can turn off in Settings. See [PRIVACY.md](PRIVACY.md).
 
 ## Contributing
 
@@ -57,4 +59,4 @@ Pull requests are welcome — especially new detection rules. See [CONTRIBUTING.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE). Third-party software is listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
