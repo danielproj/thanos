@@ -1,0 +1,29 @@
+# Pull-request and branch CI. It has NO secrets and uses pull_request (never pull_request_target),
+# so a fork's change runs with a read-only token.
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build-test:
+    name: ci
+    # Thanos needs the macOS 26+ SDK (Liquid Glass). Point THANOS_RUNNER at an image with Xcode 26 or later.
+    runs-on: ${{ vars.THANOS_RUNNER || 'macos-latest' }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Select the newest Xcode
+        run: |
+          latest="$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1 || true)"
+          if [ -n "$latest" ]; then sudo xcode-select -s "$latest"; fi
+          xcodebuild -version
+      - name: Build, test and check (no secrets)
+        run: ./scripts/ci.sh

@@ -1,0 +1,45 @@
+name: Bug report
+description: Something is wrong, crashes, or shows a wrong number
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what did you see instead? Screenshots help.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Scan Home Folder\n2. Open App Leftovers\n3. …"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Thanos version
+      description: Thanos › About Thanos
+      placeholder: "0.1.0 (1)"
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version and Mac
+      placeholder: "macOS 26.2, MacBook Pro M3"
+    validations:
+      required: true
+  - type: dropdown
+    id: fda
+    attributes:
+      label: Full Disk Access
+      options: ["Granted", "Not granted", "Not sure"]
+    validations:
+      required: true
+  - type: textarea
+    id: wrong-finding
+    attributes:
+      label: If something was wrongly offered for removal
+      description: The section, the item's title and its path. Please don't paste anything private.

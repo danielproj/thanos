@@ -1,0 +1,19 @@
+name: Feature or detection idea
+description: Suggest a feature, or a kind of leftover/junk Thanos should find
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is it useful?
+  - type: textarea
+    id: paths
+    attributes:
+      label: For a new detection rule
+      description: Which paths does it cover, how can Thanos tell it's safe, and how is it recreated if removed?

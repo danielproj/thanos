@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>Thanos</string>
+	<key>CFBundleExecutable</key>
+	<string>Thanos</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
+	<key>CFBundleIdentifier</key>
+	<string>dev.thanos.diskmap</string>
+	<key>CFBundleName</key>
+	<string>Thanos</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.0.0-dev</string>
+	<key>CFBundleVersion</key>
+	<string>0</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>26.0</string>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>Thanos measures your Desktop to show what takes up space.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Thanos measures your Documents to show what takes up space.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>Thanos looks for old installers and large files in Downloads.</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2026 Daniel Proskurka. MIT License.</string>
+	<key>NSNetworkVolumesUsageDescription</key>
+	<string>Thanos can map network folders you choose to scan.</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSRemovableVolumesUsageDescription</key>
+	<string>Thanos can map external drives you choose to scan.</string>
+</dict>
+</plist>
