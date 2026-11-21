@@ -2,6 +2,12 @@
 
 All notable changes are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- Local development builds are now "Thanos Dev" (`com.danyilproskurka.thanos.dev`) with updates turned off, so running one can no longer interfere with the installed app's Full Disk Access.
+
 ## [0.3.0] — 2026-11-21
 
 ### Added

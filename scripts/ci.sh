@@ -6,6 +6,9 @@ swift --version
 swift build -c release --arch arm64
 swift test
 scripts/build-app.sh
+# Dev builds must never carry the release identifier or the update feed.
+[ "$(plutil -extract CFBundleIdentifier raw build/Thanos.app/Contents/Info.plist)" = com.danyilproskurka.thanos.dev ]
+! plutil -extract SUFeedURL raw build/Thanos.app/Contents/Info.plist >/dev/null 2>&1
 codesign --verify --strict --deep build/Thanos.app
 # Auto-update must be wired: Sparkle embedded and loadable, feed and public key present.
 test -d build/Thanos.app/Contents/Frameworks/Sparkle.framework
